@@ -1,0 +1,22 @@
+name: daily-post
+on:
+  schedule:
+    - cron: "30 4 * * *"   # daily 10:00 AM IST
+  workflow_dispatch:        # manual test button
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python post.py
+        env:
+          GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+          IG_ID: ${{ secrets.IG_ID }}
+          PAGE_ID: ${{ secrets.PAGE_ID }}
+          BUSINESS_TYPE: ${{ vars.BUSINESS_TYPE }}
+          BUSINESS_NAME: ${{ vars.BUSINESS_NAME }}
